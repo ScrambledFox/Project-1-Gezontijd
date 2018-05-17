@@ -1,3 +1,4 @@
+#include <Adafruit_NeoPixel.h>
 #include <Servo.h>
 #include <Stepper.h>
 
@@ -5,7 +6,7 @@
 int currentMonth;
 int currentDay;
 int season = 0;
-float dayLength = 2.075;
+float dayLength = 2.1;
 
 unsigned long currentMillis;
 unsigned long lastTime;
@@ -29,7 +30,7 @@ int IN1 = 8;
 int IN2 = 9;
 int IN3 = 10;
 int IN4 = 11;
-float pulseTime = 50; //21093.75;
+float pulseTime = 21093.75; //21093.75;
 
 // The tree values for the servo, because the servo isn't that precise.
 int treeValue0 = 19;
@@ -44,6 +45,10 @@ int backgroundNightValue = 258; //160;
 int backgroundServoTargetValue;
 int dayCounter = 0;
 float dayProgress = 0;
+float dayTimeOffset = 0.33;
+
+// LED strip
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, 6, NEO_RGB + NEO_KHZ800);
 
 void setup() {
 
@@ -59,6 +64,18 @@ void setup() {
   pinMode(IN2, OUTPUT); 
   pinMode(IN3, OUTPUT); 
   pinMode(IN4, OUTPUT); 
+
+  // LED Strip
+  strip.begin();
+  strip.show();
+
+  strip.setBrightness(100);
+
+  uint32_t magenta = strip.Color(200, 200, 255);
+  for(int n = 0; n < 60; n++){
+    strip.setPixelColor(n, magenta);
+  }
+  strip.show();
 
   // Time setup for a specific date
   //ChangeSeason(SeasonOnDate(23, 3));
@@ -126,7 +143,7 @@ void loop() {
   }
 
   // background servo
-  dayProgress = ((currentMillis / pulseTime) / 2048) / dayLength;
+  dayProgress = ((currentMillis / pulseTime) / 2048) / dayLength + dayTimeOffset;
 
   dayProgress -= dayCounter;
   if(dayProgress >= 1.00){
