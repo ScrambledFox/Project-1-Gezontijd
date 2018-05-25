@@ -49,6 +49,8 @@ float dayTimeOffset = 0.33;
 
 // LED strip
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, 6, NEO_RGB + NEO_KHZ800);
+uint32_t dayColour = strip.Color(255, 255, 255);
+uint32_t nightColour = strip.Color(255, 255, 255);
 
 void setup() {
 
@@ -66,16 +68,7 @@ void setup() {
   pinMode(IN4, OUTPUT); 
 
   // LED Strip
-  strip.begin();
-  strip.show();
 
-  strip.setBrightness(100);
-
-  uint32_t magenta = strip.Color(200, 200, 255);
-  for(int n = 0; n < 60; n++){
-    strip.setPixelColor(n, magenta);
-  }
-  strip.show();
 
   // Time setup for a specific date
   //ChangeSeason(SeasonOnDate(23, 3));
@@ -261,11 +254,25 @@ String GetCurrentSeason(){
 void ToDay(){
 //  SmoothServo(backgroundServo, backgroundNightValue, backgroundDayValue, backgroundServoSpeed);
   backgroundServoTargetValue = backgroundDayValue;
+  ToColour(dayColour);
 }
 
 void ToNight(){
   //SmoothServo(backgroundServo, backgroundDayValue, backgroundNightValue, backgroundServoSpeed);
   backgroundServoTargetValue = backgroundNightValue;
+  ToColour(nightColour);
+}
+
+void ToColour(uint32_t colour){
+  strip.begin();
+  strip.show();
+
+  strip.setBrightness(100);
+
+  for(int n = 0; n < 60; n++){
+    strip.setPixelColor(n, magenta);
+  }
+  strip.show();
 }
 
 void SmoothServo(Servo servo, float start, float target, float servoSpeed){
