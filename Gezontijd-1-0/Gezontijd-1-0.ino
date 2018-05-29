@@ -25,13 +25,6 @@ float pulseTime = 50; //21093.75 for real time.
 
 // Background Servo variables
 
-
-// Tree values // NOT BEING USED RIGHT NOW TODO:::
-int summerTargetValue = 19;
-int autumnTargetValue = 19;
-int winterTargetValue = 19;
-int springTargetValue = 19;
-
 void setup(){
 
 	strip.begin();

@@ -49,8 +49,8 @@ float dayTimeOffset = 0.33;
 
 // LED strip
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, 6, NEO_RGB + NEO_KHZ800);
-uint32_t dayColour = strip.Color(255, 255, 255);
-uint32_t nightColour = strip.Color(255, 255, 255);
+uint32_t dayColour = strip.Color(216, 216, 255);
+uint32_t nightColour = strip.Color(100, 100, 255);
 
 void setup() {
 
