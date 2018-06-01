@@ -6,7 +6,7 @@
 int currentMonth;
 int currentDay;
 int season = 0;
-float dayLength = 2.1;
+float dayLength = 2;
 
 unsigned long currentMillis;
 unsigned long lastTime;
@@ -30,7 +30,7 @@ int IN1 = 8;
 int IN2 = 9;
 int IN3 = 10;
 int IN4 = 11;
-float pulseTime = 21093.75; //21093.75;
+float pulseTime = 100; //21093.75;
 
 // The tree values for the servo, because the servo isn't that precise.
 int treeValue0 = 19;
@@ -45,7 +45,8 @@ int backgroundNightValue = 258; //160;
 int backgroundServoTargetValue;
 int dayCounter = 0;
 float dayProgress = 0;
-float dayTimeOffset = 0.33;
+float dayTimeOffset = 0;
+bool dayPart = false;
 
 // LED strip
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, 6, NEO_RGB + NEO_KHZ800);
@@ -68,6 +69,8 @@ void setup() {
   pinMode(IN4, OUTPUT); 
 
   // LED Strip
+
+  ToNight();
 
 
   // Time setup for a specific date
@@ -146,9 +149,9 @@ void loop() {
   Serial.println(dayProgress);
   
   if(dayProgress >= 0.5){
-    ToNight();
+    if(dayPart) ToNight();
   } else if(dayProgress < 0.5){
-    ToDay();
+    if(!dayPart) ToDay();
   }
   backgroundServo.write(Lerp(backgroundServo.read(), backgroundServoTargetValue, 0.01));
   
@@ -255,12 +258,14 @@ void ToDay(){
 //  SmoothServo(backgroundServo, backgroundNightValue, backgroundDayValue, backgroundServoSpeed);
   backgroundServoTargetValue = backgroundDayValue;
   ToColour(dayColour);
+  dayPart = true;
 }
 
 void ToNight(){
   //SmoothServo(backgroundServo, backgroundDayValue, backgroundNightValue, backgroundServoSpeed);
   backgroundServoTargetValue = backgroundNightValue;
   ToColour(nightColour);
+  dayPart = false;
 }
 
 void ToColour(uint32_t colour){
@@ -270,7 +275,7 @@ void ToColour(uint32_t colour){
   strip.setBrightness(100);
 
   for(int n = 0; n < 60; n++){
-    strip.setPixelColor(n, magenta);
+    strip.setPixelColor(n, colour);
   }
   strip.show();
 }
