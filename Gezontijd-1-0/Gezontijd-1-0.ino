@@ -34,7 +34,7 @@ int IN4 = 11;
 // Internal step Variables
 int steps = 0; // Stepper sequence
 int direction = 1; // Clock-wise
-float pulseTime = 50; //21093.75 for real time.
+float pulseTime = 50; // set this to 21093.75 for real time.
 
 // Background Servo variables
 Servo backgroundServo;
