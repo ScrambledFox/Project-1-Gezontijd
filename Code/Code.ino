@@ -68,11 +68,6 @@ void setup() {
   pinMode(IN3, OUTPUT); 
   pinMode(IN4, OUTPUT); 
 
-  // LED Strip
-
-  ToNight();
-
-
   // Time setup for a specific date
   //ChangeSeason(SeasonOnDate(23, 3));
   //ToDay();
